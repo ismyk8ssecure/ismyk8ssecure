@@ -1,0 +1,5 @@
+requests
+pyyaml
+packageurl-python
+semantic_version
+colorama

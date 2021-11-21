@@ -1,0 +1,9 @@
+vulnerability_id:
+vulnerability_description:
+vulnerable_components:
+  - component_name:
+    vulnerable_versions: [] # These are computed from `vulnerable_version_ranges`
+    vulnerable_version_ranges: [] # These are manually filled
+references: []
+last_updated_at:
+created_at:
