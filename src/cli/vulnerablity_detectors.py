@@ -1,7 +1,7 @@
 from typing import Dict, List, Set
-from vulnerability_index import vulnerability_index
 
-from structures import DetectedVulnerability
+from cli.vulnerability_index import vulnerability_index
+from cli.structures import DetectedVulnerability
 
 VULNERABILITY_DETECTORS = {}
 

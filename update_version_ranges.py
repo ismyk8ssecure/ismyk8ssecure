@@ -18,6 +18,7 @@ class ComponentVersionStore:
             "kube-proxy-windows": self.version_fetcher_k8s,
             "kubectl": self.version_fetcher_k8s,
             "kubernetes": self.version_fetcher_k8s,
+            "snapshot-controller": self.version_fetcher_snapshot_controller
         }
 
     def add_component(self, component):
@@ -57,6 +58,22 @@ class ComponentVersionStore:
             versions.append(tag["ref"].split("/")[-1][1:])  # eg "ref": "refs/tags/v0.4" -> "0.4"
         return versions
 
+    @staticmethod
+    @cache
+    def version_fetcher_snapshot_controller():
+        url = ComponentVersionStore.construct_gh_api_url_for_component("kubernetes-csi", "external-snapshotter")
+        resp = requests.get(url)
+        resp.raise_for_status()
+        resp = resp.json()
+        versions = []
+        for tag in resp:
+            if "client" in tag["ref"]:
+                continue
+            versions.append(
+                tag["ref"].split("/")[-1][1:]
+            )
+        return versions
+
 
 version_store = ComponentVersionStore()
 
@@ -82,13 +99,13 @@ def update_advisory(advisory):
             advisory["vulnerable_components"][i]["vulnerable_versions"]
         ):
             print(
-                "new versions added",
+                f"new versions added in advisory for {advisory['vulnerability_id']}", 
                 set(vulnerable_versions).difference(
                     advisory["vulnerable_components"][i]["vulnerable_versions"]
                 ),
             )
             print(
-                "versions removed",
+                f"versions removed in  advisory for {advisory['vulnerability_id']}",
                 set(advisory["vulnerable_components"][i]["vulnerable_versions"]).difference(
                     vulnerable_versions
                 ),

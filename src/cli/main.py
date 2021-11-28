@@ -1,12 +1,14 @@
+import os
+
 import typer
 
-from version_detectors import DETECTORS
-from vulnerablity_detectors import detect_vulnerablities
-from formatters import format_report
-from utils import normalized_version
-from utils import blue_str
+from cli.version_detectors import DETECTORS
+from cli.vulnerablity_detectors import detect_vulnerablities
+from cli.formatters import format_report
+from cli.utils import normalized_version
+from cli.utils import blue_str
 
-def main():
+def _main():
     versions_by_component = {}
     for component_name, detector in DETECTORS.items():
         typer.echo(f"Detecting version of {component_name}")
@@ -24,6 +26,8 @@ def main():
     vuln_report = detect_vulnerablities(versions_by_component)
     format_report(vuln_report)
 
+def main():
+    typer.run(_main)
 
 if __name__ == "__main__":
-    typer.run(main)
+    main()

@@ -1,8 +1,8 @@
 from typing import Dict, Set, Callable
 from typer import echo
 
-from structures import DetectedVulnerability
-from utils import blue_str, red_str
+from cli.structures import DetectedVulnerability
+from cli.utils import blue_str, red_str
 
 
 def human_formatter(vuln_report: Set[DetectedVulnerability]):
