@@ -26,7 +26,7 @@ def normalized_version(version: str):
 
 def version_error(error: CalledProcessError):
     command = " ".join(error.cmd)
-    return f'got error while running command "{command}" '
+    return red_str(f'got error while running command "{command}" ')
 
 
 def blue_str(string: str) -> str:

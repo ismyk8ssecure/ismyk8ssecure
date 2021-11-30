@@ -8,6 +8,7 @@ from cli.formatters import format_report
 from cli.utils import normalized_version
 from cli.utils import blue_str
 
+
 def _main():
     versions_by_component = {}
     for component_name, detector in DETECTORS.items():
@@ -26,8 +27,10 @@ def _main():
     vuln_report = detect_vulnerablities(versions_by_component)
     format_report(vuln_report)
 
+
 def main():
     typer.run(_main)
+
 
 if __name__ == "__main__":
     main()

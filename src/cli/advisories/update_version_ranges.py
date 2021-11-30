@@ -18,7 +18,7 @@ class ComponentVersionStore:
             "kube-proxy-windows": self.version_fetcher_k8s,
             "kubectl": self.version_fetcher_k8s,
             "kubernetes": self.version_fetcher_k8s,
-            "snapshot-controller": self.version_fetcher_snapshot_controller
+            "snapshot-controller": self.version_fetcher_snapshot_controller,
         }
 
     def add_component(self, component):
@@ -61,7 +61,9 @@ class ComponentVersionStore:
     @staticmethod
     @cache
     def version_fetcher_snapshot_controller():
-        url = ComponentVersionStore.construct_gh_api_url_for_component("kubernetes-csi", "external-snapshotter")
+        url = ComponentVersionStore.construct_gh_api_url_for_component(
+            "kubernetes-csi", "external-snapshotter"
+        )
         resp = requests.get(url)
         resp.raise_for_status()
         resp = resp.json()
@@ -69,9 +71,7 @@ class ComponentVersionStore:
         for tag in resp:
             if "client" in tag["ref"]:
                 continue
-            versions.append(
-                tag["ref"].split("/")[-1][1:]
-            )
+            versions.append(tag["ref"].split("/")[-1][1:])
         return versions
 
 
@@ -99,7 +99,7 @@ def update_advisory(advisory):
             advisory["vulnerable_components"][i]["vulnerable_versions"]
         ):
             print(
-                f"new versions added in advisory for {advisory['vulnerability_id']}", 
+                f"new versions added in advisory for {advisory['vulnerability_id']}",
                 set(vulnerable_versions).difference(
                     advisory["vulnerable_components"][i]["vulnerable_versions"]
                 ),
@@ -125,9 +125,10 @@ def update_file(path):
 
 
 def main():
-    paths = filter(lambda p: p.endswith("yaml"), os.listdir("./advisories"))
+    paths = filter(lambda p: p.startswith("CVE-") and p.endswith("yaml"), os.listdir("./"))
     for p in paths:
-        update_file(os.path.join("./advisories", p))
+        print("processing ", p)
+        update_file(os.path.join("./", p))
 
 
 if __name__ == "__main__":
