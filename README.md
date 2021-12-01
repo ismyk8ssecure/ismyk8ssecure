@@ -1,8 +1,22 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/28975399/143683893-8304957e-54c8-487a-98e3-84d04c61daeb.png" alt="ismyk8ssecure" title="ismyk8ssecure" width="400" height="400"/>
+  <img src="https://github.com/ismyk8ssecure/ismyk8ssecure/raw/main/docs/static/logo.png" alt="ismyk8ssecure" title="ismyk8ssecure"/>
 </p>
 
-**ismyk8ssecure** is a FOSS tool to check whether your K8s cluster contains previously reported vulnerabilities.
+<div align="center">
+  <img src="https://img.shields.io/github/license/ismyk8ssecure/ismyk8ssecure.svg" alt="apache2-license"/>
+  <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python3.8" />
+</div>
+
+<div align="center">
+  <b>ismyk8ssecure</b> is a FOSS tool to check whether your K8s cluster contains previously reported vulnerabilities.
+</div>
+
+---
+
+<p align="center">
+<img src="https://github.com/ismyk8ssecure/ismyk8ssecure/raw/main/docs/static/demo.gif" alt="ismyk8ssecure_demo_gif" title="ismyk8ssecure" />
+</p>
+
 
 ## Get Started in 60 seconds !
 
@@ -53,6 +67,6 @@ These are functions defined per (vulnerability, k8s component) pair. They are ca
 
 ## Roadmap:
 
-- Convert most of the kubernetes security advisories into machine readable format.
+- [ ] Convert most of the kubernetes security advisories into machine readable format.
 
-- Implement fine tuned vulnerability detectors and eventually become a **smart npm audit**.
+- [ ] Implement fine tuned vulnerability detectors and eventually become a **smart npm audit**.
