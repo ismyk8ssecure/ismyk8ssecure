@@ -91,7 +91,6 @@ version_store = ComponentVersionStore()
 def update_advisory(advisory):
     for i, vc in enumerate(advisory["vulnerable_components"]):
         version_store.add_component(vc["component_name"])
-        print(version_store.get_versions_of_component(vc["component_name"]))
         vulnerable_versions = []
         for version in version_store.get_versions_of_component(vc["component_name"]):
             vulnerable_version_ranges = vc["vulnerable_version_ranges"]
@@ -119,6 +118,11 @@ def update_advisory(advisory):
                 ),
             )
             advisory["last_updated_at"] = datetime.now(timezone.utc).__str__()
+        if not advisory["created_at"]:
+            if not advisory["last_updated_at"]:
+                advisory["last_updated_at"] = datetime.now(timezone.utc).__str__()
+            advisory["created_at"] = advisory["last_updated_at"]
+
 
         advisory["vulnerable_components"][i]["vulnerable_versions"] = vulnerable_versions
         return advisory
