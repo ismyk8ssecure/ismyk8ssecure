@@ -9,13 +9,13 @@ For each advisory file it does the following:
 """
 
 import os
-import semantic_version
 from datetime import datetime, timezone
 from functools import cache
 
 import yaml
 import requests
 from univers.version_specifier import VersionSpecifier
+from univers.versions import SemverVersion
 
 class ComponentVersionStore:
     def __init__(self):
@@ -94,13 +94,10 @@ def update_advisory(advisory):
         print(version_store.get_versions_of_component(vc["component_name"]))
         vulnerable_versions = []
         for version in version_store.get_versions_of_component(vc["component_name"]):
-            vulnerable_version_ranges = [
-                semantic_version.NpmSpec(vulnerable_version_range)
-                for vulnerable_version_range in vc["vulnerable_version_ranges"]
-            ]
+            vulnerable_version_ranges = vc["vulnerable_version_ranges"]
             if any(
                 [
-                    version in VersionSpecifier.from_scheme_version_spec_string("semver", version_range)
+                    SemverVersion(version) in VersionSpecifier.from_scheme_version_spec_string("semver", version_range)
                     for version_range in vulnerable_version_ranges
                 ]
             ):
@@ -138,8 +135,6 @@ def update_file(path):
 def main():
     paths = filter(lambda p: p.startswith("CVE-") and p.endswith("yaml"), os.listdir("./"))
     for p in paths:
-        if "CVE-2020-8554" not in p:
-            continue
         print("processing ", p)
         update_file(os.path.join("./", p))
 
