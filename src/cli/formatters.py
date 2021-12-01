@@ -10,7 +10,7 @@ def human_formatter(vuln_report: Set[DetectedVulnerability]):
         echo(
             f"Detected vulnerability {red_str(detected_vuln.vulnerability.cve_id)} in component {blue_str(detected_vuln.component)}"
         )
-        echo(f"For more info check {blue_str(detected_vuln.vulnerability.link)}")
+        echo(f"For more info check {blue_str(detected_vuln.vulnerability.link)}\n")
 
 
 FORMATTERS: Dict[str, Callable] = {"human": human_formatter}

@@ -17,6 +17,7 @@ import requests
 from univers.version_specifier import VersionSpecifier
 from univers.versions import SemverVersion
 
+
 class ComponentVersionStore:
     def __init__(self):
         self.store = {}
@@ -96,7 +97,8 @@ def update_advisory(advisory):
             vulnerable_version_ranges = vc["vulnerable_version_ranges"]
             if any(
                 [
-                    SemverVersion(version) in VersionSpecifier.from_scheme_version_spec_string("semver", version_range)
+                    SemverVersion(version)
+                    in VersionSpecifier.from_scheme_version_spec_string("semver", version_range)
                     for version_range in vulnerable_version_ranges
                 ]
             ):
@@ -122,7 +124,6 @@ def update_advisory(advisory):
             if not advisory["last_updated_at"]:
                 advisory["last_updated_at"] = datetime.now(timezone.utc).__str__()
             advisory["created_at"] = advisory["last_updated_at"]
-
 
         advisory["vulnerable_components"][i]["vulnerable_versions"] = vulnerable_versions
         return advisory

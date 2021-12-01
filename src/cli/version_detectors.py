@@ -58,10 +58,9 @@ def ingress_nginx_version_detector():
         for image in images:
             if image.startswith("k8s.gcr.io/ingress-nginx/controller"):
                 echo(f" found ingress-nginx in pod {pod}")
-                versions.append(
-                    image.split(":")[1].split("@")[0]
-                )
+                versions.append(image.split(":")[1].split("@")[0])
     return versions
+
 
 @requires_kubectl
 def kubelet_version_detector():
@@ -90,6 +89,7 @@ def container_images_by_pod():
             ans[pod_name].append(container["image"])
     return ans
 
+
 @requires_kubectl
 def kube_proxy_version_detector():
     versions = []
@@ -98,11 +98,8 @@ def kube_proxy_version_detector():
         for image in images:
             if image.startswith("k8s.gcr.io/kube-proxy:"):
                 echo(f" kube-proxy found in pod {pod}")
-                versions.append(
-                    image.split(":")[1]
-                )
+                versions.append(image.split(":")[1])
     return images
-
 
 
 @requires_kubectl
