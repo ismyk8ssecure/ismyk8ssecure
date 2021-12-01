@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/28975399/144255214-f4128bf7-9534-4ab6-9166-e628e270d4d8.png" alt="ismyk8ssecure" title="ismyk8ssecure"/>
+  <img src="https://github.com/ismyk8ssecure/ismyk8ssecure/raw/main/docs/static/logo.png" alt="ismyk8ssecure" title="ismyk8ssecure"/>
 </p>
 
 <div align="center">
