@@ -44,10 +44,17 @@ def kubectl_version_detector():
 
 @requires_kubectl
 def kubeapi_server_version_detector():
-    output = kubectl_version_command_output()
-    if not output:
-        return
-    return [output.get("serverVersion", {}).get("gitVersion")]
+    versions = []
+    images_by_pod = container_images_by_pod()
+    for pod, images in images_by_pod.items():
+        for image in images:
+            if not image.startswith("k8s.gcr.io/kube-apiserver:"):
+                continue
+            version = image.split(":")[-1]
+            version = version[1:]
+            echo(f" Found kube-apiserver inside pod {pod}")
+            versions.append(version)
+    return versions
 
 
 @requires_kubectl
