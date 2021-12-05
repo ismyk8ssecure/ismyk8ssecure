@@ -117,10 +117,26 @@ def snapshot_controller_version_detector():
     return versions
 
 
+@requires_kubectl
+def kube_controller_manager_version_detector():
+    versions = []
+    images_by_pod = container_images_by_pod()
+    for pod, images in images_by_pod.items():
+        for image in images:
+            if not image.startswith("k8s.gcr.io/kube-controller-manager:"):
+                continue
+            version = image.split(":")[-1]
+            version = version[1:]
+            echo(f" Found kube-controller-manager inside pod {pod}")
+            versions.append(version)
+    return versions
+
+
 DETECTORS = {
     "kubectl": kubectl_version_detector,
     "ingress-nginx": ingress_nginx_version_detector,
     "kubelet": kubelet_version_detector,
     "snapshot-controller": snapshot_controller_version_detector,
     "kube-apiserver": kubeapi_server_version_detector,
+    "kube-controller-manager": kube_controller_manager_version_detector,
 }

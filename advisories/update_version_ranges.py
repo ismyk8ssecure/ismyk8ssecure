@@ -30,6 +30,7 @@ class ComponentVersionStore:
             "kubectl": self.version_fetcher_k8s,
             "kubernetes": self.version_fetcher_k8s,
             "snapshot-controller": self.version_fetcher_snapshot_controller,
+            "kube-controller-manager": self.version_fetcher_k8s,
         }
 
     def add_component(self, component):
