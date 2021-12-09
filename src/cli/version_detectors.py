@@ -1,5 +1,6 @@
 import json
 import subprocess
+from shutil import which
 from functools import cache
 
 from typer import echo
@@ -142,6 +143,14 @@ def kube_controller_manager_version_detector():
     return versions
 
 
+def minikube_version_detector():
+    if not which("minikube"):
+        return
+    output = run(["minikube", "version", "-o", "json"])
+    output = json.loads(output)
+    return [output["minikubeVersion"]]
+
+
 @requires_kubectl
 def kubernetes_dashboard_version_detector():
     versions = []
@@ -166,4 +175,5 @@ DETECTORS = {
     "kube-apiserver": kubeapi_server_version_detector,
     "kube-controller-manager": kube_controller_manager_version_detector,
     "kubernetes-dashboard": kubernetes_dashboard_version_detector,
+    "minikube": minikube_version_detector,
 }
