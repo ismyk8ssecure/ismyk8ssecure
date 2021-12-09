@@ -67,6 +67,6 @@ These are functions defined per (vulnerability, k8s component) pair. They are ca
 
 ## Roadmap:
 
-- [ ] Convert most of the kubernetes security advisories into machine readable format.
+- [X] Convert most of the kubernetes security advisories into machine readable format.
 
 - [ ] Implement fine tuned vulnerability detectors and eventually become a **smart npm audit**.
