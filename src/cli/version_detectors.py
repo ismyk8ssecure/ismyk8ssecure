@@ -50,8 +50,9 @@ def kubeapi_server_version_detector():
         for image in images:
             if not image.startswith("k8s.gcr.io/kube-apiserver:"):
                 continue
-            version = image.split(":")[-1]
-            version = version[1:]
+            version = image.split(":", maxsplit=1)[-1]
+            if "sha" in version:
+                version = version.split("@")[0]
             echo(f" Found kube-apiserver inside pod {pod}")
             versions.append(version)
     return versions
@@ -117,8 +118,9 @@ def snapshot_controller_version_detector():
         for image in images:
             if not image.startswith("k8s.gcr.io/sig-storage/snapshot-controller"):
                 continue
-            version = image.split(":")[-1]
-            version = version[1:]
+            version = image.split(":", maxsplit=1)[-1]
+            if "sha" in version:
+                version = version.split("@")[0]
             echo(f" Found snapshot-controller inside pod {pod}")
             versions.append(version)
     return versions
@@ -132,9 +134,26 @@ def kube_controller_manager_version_detector():
         for image in images:
             if not image.startswith("k8s.gcr.io/kube-controller-manager:"):
                 continue
-            version = image.split(":")[-1]
-            version = version[1:]
+            version = image.split(":", maxsplit=1)[-1]
+            if "sha" in version:
+                version = version.split("@")[0]
             echo(f" Found kube-controller-manager inside pod {pod}")
+            versions.append(version)
+    return versions
+
+
+@requires_kubectl
+def kubernetes_dashboard_version_detector():
+    versions = []
+    images_by_pod = container_images_by_pod()
+    for pod, images in images_by_pod.items():
+        for image in images:
+            if not image.startswith("kubernetesui/dashboard:"):
+                continue
+            version = image.split(":", maxsplit=1)[-1]
+            if "sha" in version:
+                version = version.split("@")[0]
+            echo(f" Found kubernetes-dashboard inside pod {pod}")
             versions.append(version)
     return versions
 
@@ -146,4 +165,5 @@ DETECTORS = {
     "snapshot-controller": snapshot_controller_version_detector,
     "kube-apiserver": kubeapi_server_version_detector,
     "kube-controller-manager": kube_controller_manager_version_detector,
+    "kubernetes-dashboard": kubernetes_dashboard_version_detector,
 }

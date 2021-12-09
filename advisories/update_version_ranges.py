@@ -31,6 +31,7 @@ class ComponentVersionStore:
             "kubernetes": self.version_fetcher_k8s,
             "snapshot-controller": self.version_fetcher_snapshot_controller,
             "kube-controller-manager": self.version_fetcher_k8s,
+            "kubernetes-dashboard": self.version_fetcher_kubernetes_dashboard,
         }
 
     def add_component(self, component):
@@ -57,6 +58,17 @@ class ComponentVersionStore:
         for line in resp.text.split("\n"):
             if line.startswith("###"):
                 versions.append(line.split("###")[1].strip())
+        return versions
+
+    @staticmethod
+    @cache
+    def version_fetcher_kubernetes_dashboard():
+        url = ComponentVersionStore.construct_gh_api_url_for_component("kubernetes", "dashboard")
+        resp = requests.get(url)
+        resp.raise_for_status()
+        versions = []
+        for tag in resp.json():
+            versions.append(tag["ref"].split("/")[-1][1:])  # eg "ref": "refs/tags/v0.4" -> "0.4"
         return versions
 
     @staticmethod
